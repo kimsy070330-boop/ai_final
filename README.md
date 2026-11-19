@@ -1,22 +1,19 @@
-# 노노그램 C 단위 테스트 샘플
+# 노노그램 함수 1, 2 단위 테스트
 
-PDF에 나열된 함수가 아니라 직접 구성한 노노그램 모듈을 위한 단위 테스트입니다.
+현재 테스트는 생성한 노노그램 구조체/함수 중 다음 두 함수만 대상으로 합니다.
 
-## 빌드 및 실행
+1. `nonogram_init` — `tests/test_nonogram_init.c`
+2. `nonogram_is_valid_position` — `tests/test_nonogram_is_valid_position.c`
+
+각 테스트를 따로 실행하려면 저장소 루트에서 다음 명령을 사용합니다.
+
+```bash
+make test-init
+make test-valid-position
+```
+
+둘 다 실행하려면 다음을 실행합니다.
 
 ```bash
 make test
 ```
-
-## 테스트 대상 함수
-
-- `nonogram_init`
-- `nonogram_is_valid_position`
-- `nonogram_set_cell`
-- `nonogram_toggle_cell`
-- `nonogram_get_row_hint`
-- `nonogram_get_col_hint`
-- `nonogram_check_row`
-- `nonogram_check_col`
-- `nonogram_is_solved`
-- `nonogram_reset`
