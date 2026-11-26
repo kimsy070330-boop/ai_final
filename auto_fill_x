@@ -1,0 +1,59 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void auto_fill_x(int board[][15], int solution[][15], int size) {
+    int i, j;
+
+    for (i = 0; i < size; i++) {
+        int row_complete = 1;
+        for (j = 0; j < size; j++) {
+            if (solution[i][j] == 1 && board[i][j] != 1) row_complete = 0;
+            if (solution[i][j] == 0 && board[i][j] == 1) row_complete = 0;
+        }
+        if (row_complete == 1) {
+            for (j = 0; j < size; j++) {
+                if (board[i][j] == 0) board[i][j] = 2;
+            }
+        }
+    }
+
+    for (j = 0; j < size; j++) {
+        int col_complete = 1;
+        for (i = 0; i < size; i++) {
+            if (solution[i][j] == 1 && board[i][j] != 1) col_complete = 0;
+            if (solution[i][j] == 0 && board[i][j] == 1) col_complete = 0;
+        }
+        if (col_complete == 1) {
+            for (i = 0; i < size; i++) {
+                if (board[i][j] == 0) board[i][j] = 2;
+            }
+        }
+    }
+}
+
+int main(void) {
+    int board[15][15] = {0}, solution[15][15] = {0};
+    int size, i, j;
+
+    printf("맵 크기 입력 (5, 10, 15): ");
+    scanf("%d", &size);
+
+    printf("%dx%d 정답 배열(solution) 입력 (0 또는 1):\n", size, size);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) scanf("%d", &solution[i][j]);
+    }
+
+    printf("%dx%d 현재 보드(board) 입력 (0, 1, 2):\n", size, size);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) scanf("%d", &board[i][j]);
+    }
+
+    auto_fill_x(board, solution, size);
+
+    printf("\n[auto_fill_x 실행 후 보드 결과]\n");
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) printf("%d ", board[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
