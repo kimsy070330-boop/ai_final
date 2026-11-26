@@ -1,0 +1,37 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int check_win(int board[][15], int solution[][15], int size) {
+    int i, j;
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            int player_filled = (board[i][j] == 1) ? 1 : 0;
+            if (player_filled != solution[i][j]) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int main(void) {
+    int board[15][15] = {0}, solution[15][15] = {0};
+    int size, i, j, result;
+
+    printf("맵 크기 입력 (5, 10, 15): ");
+    scanf("%d", &size);
+
+    printf("%dx%d 정답 배열(solution) 입력 (0 또는 1):\n", size, size);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) scanf("%d", &solution[i][j]);
+    }
+
+    printf("%dx%d 플레이어 보드(board) 입력 (0, 1, 2):\n", size, size);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) scanf("%d", &board[i][j]);
+    }
+
+    result = check_win(board, solution, size);
+    printf("\n정답 판정 반환값: %d (%s)\n", result, result == 1 ? "승리" : "미완성");
+    return 0;
+}
