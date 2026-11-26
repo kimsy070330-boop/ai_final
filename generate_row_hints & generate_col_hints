@@ -1,0 +1,75 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void generate_row_hints(int solution[][15], int size, int row_hints[][8], int row_hint_counts[]) {
+    int i, j;
+    for (i = 0; i < size; i++) {
+        int count = 0, hint_idx = 0;
+        for (j = 0; j < size; j++) {
+            if (solution[i][j] == 1) count++;
+            else if (count > 0) {
+                row_hints[i][hint_idx++] = count;
+                count = 0;
+            }
+        }
+        if (count > 0) row_hints[i][hint_idx++] = count;
+        if (hint_idx == 0) {
+            row_hints[i][0] = 0;
+            hint_idx = 1;
+        }
+        row_hint_counts[i] = hint_idx;
+    }
+}
+
+void generate_col_hints(int solution[][15], int size, int col_hints[][8], int col_hint_counts[]) {
+    int i, j;
+    for (j = 0; j < size; j++) {
+        int count = 0, hint_idx = 0;
+        for (i = 0; i < size; i++) {
+            if (solution[i][j] == 1) count++;
+            else if (count > 0) {
+                col_hints[j][hint_idx++] = count;
+                count = 0;
+            }
+        }
+        if (count > 0) col_hints[j][hint_idx++] = count;
+        if (hint_idx == 0) {
+            col_hints[j][0] = 0;
+            hint_idx = 1;
+        }
+        col_hint_counts[j] = hint_idx;
+    }
+}
+
+int main(void) {
+    int solution[15][15] = {0};
+    int row_hints[15][8], row_counts[15];
+    int col_hints[15][8], col_counts[15];
+    int size, i, j, k;
+
+    printf("맵 크기 입력 (5, 10, 15): ");
+    scanf("%d", &size);
+
+    printf("%dx%d 정답 배열 입력 (0 또는 1):\n", size, size);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) scanf("%d", &solution[i][j]);
+    }
+
+    generate_row_hints(solution, size, row_hints, row_counts);
+    generate_col_hints(solution, size, col_hints, col_counts);
+
+    printf("\n[행 힌트 결과]\n");
+    for (i = 0; i < size; i++) {
+        printf("%d행: ", i);
+        for (k = 0; k < row_counts[i]; k++) printf("%d ", row_hints[i][k]);
+        printf("\n");
+    }
+
+    printf("\n[열 힌트 결과]\n");
+    for (j = 0; j < size; j++) {
+        printf("%d열: ", j);
+        for (k = 0; k < col_counts[j]; k++) printf("%d ", col_hints[j][k]);
+        printf("\n");
+    }
+    return 0;
+}
