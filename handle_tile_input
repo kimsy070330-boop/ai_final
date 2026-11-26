@@ -1,0 +1,68 @@
+#include "raylib.h"
+#include <stdio.h>
+
+void handle_tile_input(char key, int *x, int *y, int board[][15], int size) {
+    if (key == 'w' || key == 'W') {
+        if (*y > 0) (*y)--;
+    } else if (key == 's' || key == 'S') {
+        if (*y < size - 1) (*y)++;
+    } else if (key == 'a' || key == 'A') {
+        if (*x > 0) (*x)--;
+    } else if (key == 'd' || key == 'D') {
+        if (*x < size - 1) (*x)++;
+    } else if (key == ' ' || key == '1') {
+        board[*y][*x] = (board[*y][*x] == 1) ? 0 : 1;
+    } else if (key == 'x' || key == 'X' || key == '2') {
+        board[*y][*x] = (board[*y][*x] == 2) ? 0 : 2;
+    }
+}
+
+int main(void) {
+    int board[15][15] = {0};
+    int size = 5, x = 0, y = 0;
+    int cell = 60, start_x = 100, start_y = 100;
+
+    InitWindow(500, 500, "Test 3: handle_tile_input (GUI)");
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose()) {
+        // 키보드 입력 처리
+        if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) handle_tile_input('w', &x, &y, board, size);
+        if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) handle_tile_input('s', &x, &y, board, size);
+        if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) handle_tile_input('a', &x, &y, board, size);
+        if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) handle_tile_input('d', &x, &y, board, size);
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ONE)) handle_tile_input('1', &x, &y, board, size);
+        if (IsKeyPressed(KEY_X) || IsKeyPressed(KEY_TWO)) handle_tile_input('2', &x, &y, board, size);
+
+        // 마우스 클릭 처리 -> 좌표를 계산해 handle_tile_input 호출
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+            Vector2 m = GetMousePosition();
+            int gx = (int)(m.x - start_x) / cell;
+            int gy = (int)(m.y - start_y) / cell;
+            if (gx >= 0 && gx < size && gy >= 0 && gy < size) {
+                x = gx;
+                y = gy;
+                char cmd = IsMouseButtonPressed(MOUSE_LEFT_BUTTON) ? '1' : '2';
+                handle_tile_input(cmd, &x, &y, board, size);
+            }
+        }
+
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText(TextFormat("Cursor: (%d, %d) | State: %d", x, y, board[y][x]), 100, 40, 20, DARKGRAY);
+        DrawText("Left Click / 1: Fill | Right Click / 2: X | WASD: Move", 50, 70, 15, GRAY);
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int px = start_x + j * cell;
+                int py = start_y + i * cell;
+                if (board[i][j] == 1) DrawRectangle(px + 2, py + 2, cell - 4, cell - 4, SKYBLUE);
+                else if (board[i][j] == 2) DrawText("X", px + 22, py + 15, 30, RED);
+                DrawRectangleLines(px, py, cell, cell, (i == y && j == x) ? ORANGE : LIGHTGRAY);
+            }
+        }
+        EndDrawing();
+    }
+    CloseWindow();
+    return 0;
+}
