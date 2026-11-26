@@ -1,0 +1,44 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void init_board(int board[][15], int solution[][15], int size) {
+    int i, j;
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            solution[i][j] = rand() % 2;
+            board[i][j] = 0;
+        }
+    }
+}
+
+int main(void) {
+    int board[15][15], solution[15][15];
+    int size, i, j;
+
+    srand((unsigned int)time(NULL));
+
+    printf("맵 크기 입력 (5, 10, 15): ");
+    scanf("%d", &size);
+
+    init_board(board, solution, size);
+
+    printf("\n[생성된 정답 배열(solution)]\n");
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            printf("%d ", solution[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n[초기화된 플레이어 보드(board)]\n");
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            printf("%d ", board[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
